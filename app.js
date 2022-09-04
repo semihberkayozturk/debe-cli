@@ -6,12 +6,32 @@ import gradient from 'gradient-string';
 import chalkAnimation from 'chalk-animation';
 import figlet from 'figlet';
 import { createSpinner } from 'nanospinner';
-import unidecode from 'unidecode';
 import axios from "axios";
 
-const sleep = () => new Promise((h) => setTimeout(h, 2000));
+const eksi = `
+                       ,
+                      / \\
+                     (   )
+                      "-"
+ `
 
+const eksi1 = "\u{1F4A7}"
+console.log(eksi1)
+
+console.log(eksi)
+
+const sleep = () => new Promise((h) => setTimeout(h, 2000));
 const api = "https://eksisozluk-api.herokuapp.com/api/debe/";
+
+async function header() {
+    console.clear()
+    await figlet(`debe in cli`, (err, data) => {
+        console.log(gradient.summer.multiline(data) + '\n');
+    });
+    await console.log(eksi)
+    await sleep();
+};
+
 
 async function debeListesi() {
     axios.get(api)
@@ -22,28 +42,15 @@ async function debeListesi() {
         })
 };
 
-async function header() {
-    console.clear()
-    figlet('debe  in  cli', (err, data) => {
-        console.log(gradient.summer.multiline(data) + '\n');
-    });
-    await sleep();
-};
-
-async function handleDebe(debe) {
-    const checking = createSpinner("debe derhal getiriliyor...").start();
-    await sleep();
-};
-
 async function debeSec() {
     const inputs = await inquirer.prompt({
         name: "debes",
-        type: "rawlist",
+        type: "list",
         message: "debelerden bir debe seç...\n",
         choices: [
-            "test1",
-            "leonardo dicaprio",
-            "fenerbahçe"
+            "deneme1",
+            "kendini suçlamak",
+            "mustafa kemal atatürk"
         ],
     });
     return handleDebe(inputs.debes);
@@ -59,10 +66,16 @@ async function decide()  {
     if (inputs.decide === true) {
         debeSec()
     } else {
-        process.exit(0)
+        process.exit(1)
     }
 }
 
+async function handleDebe(debe) {
+    const checking = createSpinner("debe derhal getiriliyor...\n").start();
+    await sleep()
+    checking.success({ text: "debe icerigi burada olacak, o kadar." })
+    await decide()
+};
+
 await header()
 await debeSec()
-await decide()
