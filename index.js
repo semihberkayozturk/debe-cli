@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
-import chalk from 'chalk';
 import inquirer from 'inquirer';
 import gradient from 'gradient-string';
-import chalkAnimation from 'chalk-animation';
 import figlet from 'figlet';
 import { createSpinner } from 'nanospinner';
 import axios from "axios";
@@ -15,34 +13,30 @@ const eksi = `
                       "-"
  `
 
-const eksi1 = "\u{1F4A7}"
-console.log(eksi1)
-
-console.log(eksi)
-
 const sleep = () => new Promise((h) => setTimeout(h, 2000));
 const api = "https://eksisozluk-api.herokuapp.com/api/debe/";
 
 async function header() {
     console.clear()
-    await figlet(`debe in cli`, (err, data) => {
+    await console.log(eksi)
+    await figlet(`debe  in  cli`, (err, data) => {
         console.log(gradient.summer.multiline(data) + '\n');
     });
-    await console.log(eksi)
     await sleep();
 };
 
-
-async function debeListesi() {
+async function debeList() {
+    let debes = [];
     axios.get(api)
         .then(res => {
             for (let i = 0; i < (res["data"].entries).length; i++) {
-                console.log(res["data"].entries[i]["title"]);
+                debes.push(res["data"].entries[i]["title"]);
             }
+            return debes
         })
 };
 
-async function debeSec() {
+async function selectDebe() {
     const inputs = await inquirer.prompt({
         name: "debes",
         type: "list",
@@ -63,19 +57,21 @@ async function decide()  {
         message: "başka bir debe daha istiyor musun acaba?\n",
         default: "false"
     })
-    if (inputs.decide === true) {
-        debeSec()
+    if (inputs.decide) {
+        selectDebe()
     } else {
         process.exit(1)
     }
-}
+};
 
 async function handleDebe(debe) {
     const checking = createSpinner("debe derhal getiriliyor...\n").start();
     await sleep()
-    checking.success({ text: "debe icerigi burada olacak, o kadar." })
+    checking.success({ text: "selam" })
     await decide()
 };
 
+//----------------
+
 await header()
-await debeSec()
+await selectDebe()
