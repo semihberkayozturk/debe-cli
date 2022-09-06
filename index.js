@@ -25,17 +25,6 @@ async function header() {
     await sleep();
 };
 
-async function debeList() {
-    let debes = [];
-    axios.get(api)
-        .then(res => {
-            for (let i = 0; i < (res["data"].entries).length; i++) {
-                debes.push(res["data"].entries[i]["title"]);
-            }
-            return debes
-        })
-};
-
 
 async function selectDebe() {
     const inputs = await inquirer.prompt({
@@ -45,6 +34,11 @@ async function selectDebe() {
         choices: [
             "berlin",
             "iyilik",
+            "house of the dragon",
+            "hayata dair iç burkan detaylar",
+            "foo fighters",
+            "fenerbahçe",
+            "steam",
             "manfred",
             "eminem"
         ],
@@ -67,20 +61,39 @@ async function decide()  {
 };
 
 async function handleDebe(debe) {
-    const checking = createSpinner("debe derhal getiriliyor...\n").start();
+    const checking = await createSpinner("debe derhal getiriliyor...\n").start();
     await sleep()
     axios.get(api)
         .then(res => {
             for (let i = 0; i < (res["data"].entries).length; i++) {
                 if (res["data"].entries[i]["title"] === debe) {
                     let content = (res["data"].entries[i]["body"]).replace(/<br><br>/g, ' ')
-                    checking.success({ text: content })
+                    let author = res["data"].entries[i]["author"]
+                    checking.success({ text: `${content}\n\nyazar: ${author} ` })
                     decide()
                 }
             }
         });
 };
+//async function debeList() {
+//    let debeler = [];
+//    axios.get(api)
+//        .then(res => {
+//            for (let i = 0; i < (res["data"].entries).length; i++) {
+//                debeler.push(res["data"].entries[i]["title"]);
+//            }
+//        })
+//        .then((data) => {
+//            const inputs = inquirer.prompt({
+//                name: "debes",
+//                type: "list",
+//                message: "debelerden bir debe seç...\n",
+//                choices: debeler,
+//            });
+//            return handleDebe(inputs.debes);
+//        })
+//};
 
 //----------------
-//await header()
+await header()
 await selectDebe()
