@@ -13,7 +13,7 @@ const eksi = `
                       "-"
  `
 
-const sleep = () => new Promise((h) => setTimeout(h, 2000));
+const sleep = () => new Promise((h) => setTimeout(h, 1000));
 const api = "https://eksisozluk-api.herokuapp.com/api/debe/";
 
 async function header() {
@@ -36,15 +36,17 @@ async function debeList() {
         })
 };
 
+
 async function selectDebe() {
     const inputs = await inquirer.prompt({
         name: "debes",
         type: "list",
         message: "debelerden bir debe seç...\n",
         choices: [
-            "deneme1",
-            "kendini suçlamak",
-            "mustafa kemal atatürk"
+            "berlin",
+            "iyilik",
+            "manfred",
+            "eminem"
         ],
     });
     return handleDebe(inputs.debes);
@@ -67,11 +69,18 @@ async function decide()  {
 async function handleDebe(debe) {
     const checking = createSpinner("debe derhal getiriliyor...\n").start();
     await sleep()
-    checking.success({ text: "selam" })
-    await decide()
+    axios.get(api)
+        .then(res => {
+            for (let i = 0; i < (res["data"].entries).length; i++) {
+                if (res["data"].entries[i]["title"] === debe) {
+                    let content = (res["data"].entries[i]["body"]).replace(/<br><br>/g, ' ')
+                    checking.success({ text: content })
+                    decide()
+                }
+            }
+        });
 };
 
 //----------------
-
-await header()
+//await header()
 await selectDebe()
