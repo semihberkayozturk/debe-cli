@@ -14,7 +14,7 @@ const eksi = `
  `
 
 const sleep = () => new Promise((h) => setTimeout(h, 1000));
-const api = "https://eksisozluk-api.herokuapp.com/api/debe/";
+const api = "readme kısmındaki api";
 
 async function header() {
     console.clear()
