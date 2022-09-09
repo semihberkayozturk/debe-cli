@@ -14,7 +14,7 @@ const eksi = `
  `
 
 const sleep = () => new Promise((h) => setTimeout(h, 1000));
-const api = "https://eksisozluk-api.herokuapp.com/api/debe/";
+const api = "unofficial eksi sozluk api'si/debe";
 
 async function header() {
     console.clear()
@@ -23,27 +23,6 @@ async function header() {
         console.log(gradient.summer.multiline(data) + '\n');
     });
     await sleep();
-};
-
-
-async function selectDebe() {
-    const inputs = await inquirer.prompt({
-        name: "debes",
-        type: "list",
-        message: "debelerden bir debe seç...\n",
-        choices: [
-            "berlin",
-            "iyilik",
-            "house of the dragon",
-            "hayata dair iç burkan detaylar",
-            "foo fighters",
-            "fenerbahçe",
-            "steam",
-            "manfred",
-            "eminem"
-        ],
-    });
-    return handleDebe(inputs.debes);
 };
 
 async function decide()  {
@@ -75,24 +54,26 @@ async function handleDebe(debe) {
             }
         });
 };
-//async function debeList() {
-//    let debeler = [];
-//    axios.get(api)
-//        .then(res => {
-//            for (let i = 0; i < (res["data"].entries).length; i++) {
-//                debeler.push(res["data"].entries[i]["title"]);
-//            }
-//        })
-//        .then((data) => {
-//            const inputs = inquirer.prompt({
-//                name: "debes",
-//                type: "list",
-//                message: "debelerden bir debe seç...\n",
-//                choices: debeler,
-//            });
-//            return handleDebe(inputs.debes);
-//        })
-//};
+
+async function selectDebe() {
+    let debeler = [];
+    axios.get(api)
+        .then(res => {
+            for (let i = 0; i < (res["data"].entries).length; i++) {
+                debeler.push(res["data"].entries[i]["title"]);
+            }
+        })
+        .then(async() => {
+            const inputs = await inquirer.prompt({
+                name: "debes",
+                type: "list",
+                message: "debelerden bir debe seç...\n",
+                choices: debeler,
+            });
+            return handleDebe(inputs.debes)
+        })
+};
+
 
 //----------------
 await header()
