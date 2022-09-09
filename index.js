@@ -14,8 +14,8 @@ const eksi = `
  `
 
 const sleep = () => new Promise((h) => setTimeout(h, 1000));
-const api = "https://eksisozluk-api.herokuapp.com/api/debe/";
-//unofficial eksi sozluk api'si/debe
+const api = "unofficial eksi sozluk api'sinin url'si/api/debe";
+
 
 async function header() {
     console.clear()
