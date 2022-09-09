@@ -7,14 +7,15 @@ import { createSpinner } from 'nanospinner';
 import axios from "axios";
 
 const eksi = `
-                       ,
-                      / \\
-                     (   )
-                      "-"
+                        ,
+                       / \\
+                      (   )
+                       "-"
  `
 
 const sleep = () => new Promise((h) => setTimeout(h, 1000));
-const api = "unofficial eksi sozluk api'si/debe";
+const api = "https://eksisozluk-api.herokuapp.com/api/debe/";
+//unofficial eksi sozluk api'si/debe
 
 async function header() {
     console.clear()
