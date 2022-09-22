@@ -15,7 +15,6 @@ const eksi = `
 
 const sleep = () => new Promise((h) => setTimeout(h, 1000));
 const api = "https://eksisozluk-api.herokuapp.com/api/debe/";
-//unofficial eksi sozluk api'si/debe
 
 async function header() {
     console.clear()
@@ -47,7 +46,7 @@ async function handleDebe(debe) {
         .then(res => {
             for (let i = 0; i < (res["data"].entries).length; i++) {
                 if (res["data"].entries[i]["title"] === debe) {
-                    let content = (res["data"].entries[i]["body"]).replace(/<br><br>/g, ' ')
+                    let content = (res["data"].entries[i]["body"]).replace(/<br>/g, ' ')
                     let author = res["data"].entries[i]["author"]
                     checking.success({ text: `${content}\n\nyazar: ${author} ` })
                     decide()
@@ -74,7 +73,6 @@ async function selectDebe() {
             return handleDebe(inputs.debes)
         })
 };
-
 
 //----------------
 await header()
